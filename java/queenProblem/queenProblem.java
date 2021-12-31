@@ -40,39 +40,37 @@ public class QueensProblem {
             return positions;
         }
 
-        int r = 0;
-        Position queen = new Position(r, 0);
-        positions.add(queen);
+        solveNQUtil(positions, 0, boardSize);
 
-        while(
-            positions.size() < boardSize
-        ) {
-            for (int rowIndex = 0; rowIndex < boardSize; rowIndex++) {
-                for (int columnIndex = 0; columnIndex < boardSize; columnIndex++) {
+        return positions;
+    }
 
-                    queen = new Position(rowIndex, columnIndex);
-                    if(isSafeQueen(positions, queen)) {
-                        positions.add(queen);
-                        break;
-                    }
-                }
-            }
+    public static boolean solveNQUtil(List<Position> positions, int col, int boardsize)
+    {
+        /* base case: If all queens are placed
+           then return true */
+        if (col >= boardsize)
+            return true;
 
-            if(positions.size() == boardSize) {
-                break;
-            }
-            else {
-                positions.clear();
-                r++;
-                if(r > boardSize) {
-                    break;
-                }
-                queen = new Position(r, 0);
-                positions.add(queen);
+        /* Consider this column and try placing
+           this queen in all rows one by one */
+        for (int i = 0; i < boardsize; i++) {
+            /* Check if the queen can be placed on
+               board[i][col] */
+            Position p = new Position(i, col);
+            if (isSafeQueen(positions, p)) {
+                positions.add(p);
 
+                /* recur to place rest of the queens */
+                if (solveNQUtil(positions, col + 1, boardsize) == true)
+                    return true;
+
+                positions.remove(p);
             }
         }
 
-        return positions;
+        /* If the queen can not be placed in any row in
+           this column col, then return false */
+        return false;
     }
 }
