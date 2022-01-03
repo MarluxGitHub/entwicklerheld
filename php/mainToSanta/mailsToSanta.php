@@ -59,4 +59,6 @@ function calculateHolidays(DateTime $time_of_arrival): Datetime
             $time_of_arrival = $time_of_arrival->modify('+1 day');
         }
     }
+
+    return $time_of_arrival;
 }
